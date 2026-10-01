@@ -22,29 +22,29 @@
   --bg:#10151B;--panel:#18202A;--ink:#E2E8EE;--muted:#93A0AD;--line:#2B3642;--stage:#141B23;
   --sky1:#1A2634;--sky2:#223040;--ground:#2E3A2C;--ground2:#3A4837;--wall:#3A4654;
   --v1:#7C9EFF;--v2:#F1B53E;--v3:#F2709F;--bad:#FF8A80;--good:#6FD39A;--field:#0F151C;color-scheme:dark;}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{--sceneH:clamp(150px,30vh,320px)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--sceneH) + 84px)}
 *,*::before,*::after{box-sizing:inherit}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45;font-variant-numeric:tabular-nums}
 .wrap{max-width:1320px;margin:0 auto;padding:20px clamp(12px,3vw,32px) 40px}
 header{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:18px}
 h1{margin:0;font-size:clamp(1.9rem,4.2vw,3.1rem);font-weight:800;letter-spacing:-.035em;line-height:.95;font-variation-settings:"opsz" 96}
 .sub{margin:8px 0 0;color:var(--muted);max-width:60ch}
-.transport{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.play{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:12px 22px 12px 16px;background:var(--ink);color:var(--bg);font:inherit;font-weight:700;font-size:1rem;cursor:pointer}
+.transport{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-left:auto}
+.play{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:10px 20px 10px 14px;background:var(--ink);color:var(--bg);font:inherit;font-weight:700;font-size:1rem;cursor:pointer}
 .play svg{width:20px;height:20px}
 .vol{display:flex;flex-direction:column;font-size:.8rem;color:var(--muted);min-width:160px}
 button,select,input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--v1);outline-offset:2px}
-.top{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}
-.stage{position:relative;background:var(--stage);border-radius:6px;overflow:hidden}
-#scene{display:block;width:100%;height:clamp(300px,42vw,470px)}
-.meter{padding:10px 18px 14px;display:flex;align-items:baseline;gap:6px 18px;flex-wrap:wrap;border-top:1px solid var(--line)}
-.meter .big{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;letter-spacing:-.03em;line-height:1;font-variation-settings:"opsz" 96}
+.stage{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--stage);border-radius:6px;overflow:hidden;box-shadow:0 8px 18px -12px rgba(0,0,0,.45)}
+#scene{display:block;width:100%;height:var(--sceneH)}
+.meter{padding:8px 18px 10px;display:flex;align-items:center;gap:8px 18px;flex-wrap:wrap;border-top:1px solid var(--line)}
+.readout{display:flex;align-items:baseline;gap:4px 18px;flex-wrap:wrap;min-width:0}
+.meter .big{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:800;letter-spacing:-.03em;line-height:1;font-variation-settings:"opsz" 96}
 .meter .big small{font-size:.4em;font-weight:600;letter-spacing:0;margin-left:4px}
 .meter .small{color:var(--muted);font-size:.85rem}
-.rail{background:var(--panel);border-radius:6px;padding:4px 16px 14px}
-fieldset{border:0;border-bottom:1px solid var(--line);margin:0;padding:12px 0 14px}
-fieldset:last-child{border-bottom:0}
+.rail{background:var(--panel);border-radius:6px;padding:4px 16px 10px;margin-top:18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 28px;align-items:start}
+fieldset{border:0;margin:0;padding:12px 0 14px;min-width:0}
 legend{font-weight:700;font-size:1.02rem;padding:0;margin-bottom:6px;float:left;width:100%}
 legend+*{clear:both}
 .f{display:grid;grid-template-columns:1fr auto;gap:2px 8px;margin:8px 0;font-size:.9rem}
@@ -119,7 +119,9 @@ details summary{cursor:pointer;font-weight:700}
 details p,details li{max-width:78ch;color:var(--muted)}
 .hidden{display:none!important}
 @media (max-width:1100px){.voice{grid-template-columns:150px minmax(0,1fr)}.vread{grid-column:1/-1;grid-template-columns:repeat(3,1fr)}.vmsg{grid-column:1/-1}}
-@media (max-width:900px){.top,.analysis{grid-template-columns:1fr}}
+@media (max-width:900px){.analysis,.rail{grid-template-columns:1fr}.rail fieldset{border-bottom:1px solid var(--line)}.rail fieldset:last-child{border-bottom:0}}
+@media (max-width:640px){:root{--sceneH:clamp(130px,24vh,220px)}.meter .small{display:none}.vol{min-width:120px}}
+@media (max-height:560px){.stage{position:relative}html{scroll-padding-top:env(safe-area-inset-top,0px)}}
 @media (max-width:640px){.voice{grid-template-columns:1fr;padding-left:10px}.vcfg{grid-template-columns:1fr 1fr}.vread{grid-template-columns:1fr 1fr}.meter{padding:8px 12px 12px}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 </style>
@@ -131,18 +133,20 @@ details p,details li{max-width:78ch;color:var(--muted)}
     <h1>Drone chord bench</h1>
     <p class="sub">Tune three hovering quadcopters to a chord by changing props and payload, then hear and measure the result at the microphone.</p>
   </div>
-  <div class="transport">
-    <button class="play" id="play" aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path id="playIcon" d="M5 3l12 7-12 7z" fill="currentColor"/></svg><span id="playLabel">Play sound</span></button>
-    <label class="vol">Listening level <output id="volO">0 dB</output><input type="range" id="vol" min="-30" max="15" step="1" value="0"></label>
-  </div>
 </header>
 
-<div class="top">
-  <div class="stage">
-    <canvas id="scene" aria-label="Side view of the drones and the microphone"></canvas>
-    <div class="meter" aria-live="polite"><div class="big" id="mA">–<small>dB(A)</small></div><div class="small" id="mSub"></div></div>
+<div class="stage">
+  <canvas id="scene" aria-label="Side view of the drones and the microphone"></canvas>
+  <div class="meter">
+    <div class="readout" aria-live="polite"><div class="big" id="mA">–<small>dB(A)</small></div><div class="small" id="mSub"></div></div>
+    <div class="transport">
+      <button class="play" id="play" aria-pressed="false"><svg viewBox="0 0 20 20" aria-hidden="true"><path id="playIcon" d="M5 3l12 7-12 7z" fill="currentColor"/></svg><span id="playLabel">Play sound</span></button>
+      <label class="vol">Listening level <output id="volO">0 dB</output><input type="range" id="vol" min="-30" max="15" step="1" value="0"></label>
+    </div>
   </div>
-  <aside class="rail">
+</div>
+
+<section class="rail" aria-label="Scenario, measurement and chord settings">
     <fieldset>
       <legend>Scenario</legend>
       <div class="seg" role="radiogroup" aria-label="Scenario">
@@ -177,8 +181,7 @@ details p,details li{max-width:78ch;color:var(--muted)}
       <button class="btn solid" id="tuneAll" style="width:100%;margin-top:6px">Tune all drones to this chord</button>
       <p class="msg" id="chordMsg"></p>
     </fieldset>
-  </aside>
-</div>
+</section>
 
 <div class="voices" id="voices"></div>
 
@@ -629,7 +632,7 @@ function drawScene(now){
     if(dr.tether&&!FR[dr.frame].cp){ctx.strokeStyle=ink;ctx.globalAlpha=back?.5:.9;ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(x,y+10*sc);ctx.lineTo(x,gY-3);ctx.stroke();ctx.fillStyle=ink;ctx.fillRect(x-5,gY-4,10,5);ctx.globalAlpha=1}
     drawDrone(ctx,x,y,sc*Math.min(1.25,Math.max(0.8,w/800)),c,t,back,dr.mute);
   });
-  const iw=w<500?86:118,ih=w<500?68:92,ix=12,iy=12;ctx.fillStyle=C('--panel');ctx.globalAlpha=.9;ctx.fillRect(ix,iy,iw,ih);ctx.globalAlpha=1;ctx.strokeStyle=C('--line');ctx.strokeRect(ix+.5,iy+.5,iw,ih);
+  const sm=w<500||h<260,iw=sm?86:118,ih=sm?68:92,ix=12,iy=12;ctx.fillStyle=C('--panel');ctx.globalAlpha=.9;ctx.fillRect(ix,iy,iw,ih);ctx.globalAlpha=1;ctx.strokeStyle=C('--line');ctx.strokeRect(ix+.5,iy+.5,iw,ih);
   ctx.fillStyle=mut;ctx.font='10px system-ui,sans-serif';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText('Top view',ix+6,iy+5);
   const span=Math.max(S.dist,S.spacing*2.4),ks=(ih-34)/span,mx0=ix+iw/2,my0=iy+ih-10;
   ctx.fillStyle=ink;ctx.beginPath();ctx.arc(mx0,my0,3,0,Math.PI*2);ctx.fill();
